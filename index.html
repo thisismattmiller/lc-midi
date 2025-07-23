@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Hello!</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <!-- import the webpage's stylesheet -->
+    <link rel="stylesheet" href="/style.css">
+    
+    <!-- import the webpage's javascript file -->
+    <script src="/script.js" defer></script>    
+    <script type="text/javascript" src="//www.midijs.net/lib/midi.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.11"></script>
+
+
+  </head>  
+  <body>
+    <div style="margin-bottom:1em; margin-top: 5em">
+This page displays the <a href="https://en.wikipedia.org/wiki/MIDI">MIDI</a> files found in the  <a href="https://thisismattmiller.com/post/library-of-congress-web-archives/">Library of Congress web archives</a>. MIDI files no longer play in web browsers without some javascript help. Below are the web page and metadata for each MIDI file that was found.     </div>
+    <div id="app">
+
+
+      <div class="some-page-wrapper">
+        <div class="row">
+        <div class="column">
+          <div>
+  
+            <span>Click to play and show info:</span>
+            <ul>
+
+              <li v-for="m in midis">
+                <a href="#" @click="shly(m)">{{m}}</a>
+              </li>
+            </ul>
+            <div v-if="playing != false">
+                Now Playing: <br>{{playing}}<br>
+              <a style="text-decoration:none" href="#" @click="stop">🛑 Spot Playing</a>
+              
+            </div>
+          </div>
+        </div>
+        <div class="double-column">
+          
+          <div v-if="display == true">
+            
+            <div v-for="d in displayData">
+
+              <h2 style="font-size:6em;"  v-if="d.img == 'dontknow'">❌</h2>
+              <div style="background-color:whitesmoke; padding:1em">
+                
+<img  v-if="d.img != 'dontknow'" v-bind:src="d.img" style="float:right; height:100px;">
+                <h3>{{d.title}}</h3>
+                
+                <div>
+                  <a v-if="d.img != 'dontknow'" v-bind:href="d.url">Visit</a>
+                </div>
+                <div>
+                  {{d.desc}}
+                </div>
+                              
+
+              </div>
+              <img style="width:100%" v-if="d.img != 'dontknow'" v-bind:src="'shots/'+ d.id + '_0.png'">
+
+            </div>
+            
+            
+          </div>
+        </div>
+        </div>
+      </div>
+
+      
+
+    </div>
+
+    
+    
+    
+    <script>
+    
+      var midis = ["14tssb(tc).mid","amaze.mid","amazgrac.mid","amerbeau.mid","america.mid","angel5.mid","aughrim.mid","bach_jesu.mid","connect.mid","DRStarSpangledBanner.mid","eneltronco.mid","entrtnr.mid","godbless.mid","jesus_paid_it_all.mid","leegreen.mid","lobby_music.mid","marine2.mid","mi_spy.mid","morwoman.mid","pachcann.mid","patriot.mid","pytheme.mid","roxette.mid","saints.mid","usanthem.mid","wind.mid","worldluv.mid","x2rhap1.mid"]
+      var midiData = {'amazgrac.mid': [{'title': 'A Tribute To Those Lost At The World Trade Center', 'url': 'http://www.loc.gov/item/lcwaN0021328/', 'img': 'https://tile.loc.gov/storage-services/service/webcapture/project_1/thumbnails/lcwaS0030221.jpg', 'desc': 'A Tribute To Those Lost At The World Trade Center, a Web Site produced by George, is part of the Library of Congress September 11 Web Archive and preserves the web expressions of individuals, groups, the press and institutions in the United States and from around the world in the aftermath of the attacks in the United States on September 11, 2001.  Web Site.   electronic |   Electronic (Form).', 'id': 922}], 'america.mid': [{'title': 'Compassionate Friends', 'url': 'http://www.loc.gov/item/lcwaN0021335/', 'img': 'https://tile.loc.gov/storage-services/service/webcapture/project_1/thumbnails/lcwaS0030228.jpg', 'desc': 'The Compassionate Friends, a Web Site produced by Compassionate Friends -Atlanta Georgia Area Chapters, a charitable or civic organization, is part of the Library of Congress September 11 Web Archive and preserves the web expressions of individuals, groups, the press and institutions in the United States and from around the world in the aftermath of the attacks in the United States on September 11, 2001.  Web Site.   electronic |   Electronic (Form).', 'id': 11245}], 'pachcann.mid': [{'title': 'Official Campaign Web Site - Michael S. Metti', 'url': 'http://www.loc.gov/item/lcwaN0000976/', 'img': 'https://tile.loc.gov/storage-services/service/webcapture/project_1/thumbnails/lcwaS0001434.jpg', 'desc': 'Web Site.   electronic |   Electronic (Form).', 'id': 12249}], 'eneltronco.mid': [{'title': 'Portada del 5 de Septiembre digital, Cienfuegos, Cuba', 'url': 'http://www.loc.gov/item/lcwaN0021187/', 'img': 'https://tile.loc.gov/storage-services/service/webcapture/project_1/thumbnails/lcwaS0030080.jpg', 'desc': '5 de Septiembre, a Web Site produced by Partido Comunista de Cuba en Cienfuegos, a political party, is part of the Library of Congress September 11 Web Archive and preserves the web expressions of individuals, groups, the press and institutions in the United States and from around the world in the aftermath of the attacks in the United States on September 11, 2001.  Web Site.   electronic |   Electronic (Form).', 'id': 12273}], 'entrtnr.mid': [{'title': 'United States Bankruptcy Court for the Eastern District of Missouri', 'url': 'http://www.loc.gov/item/lcwaN0015221/', 'img': 'https://tile.loc.gov/storage-services/service/webcapture/project_1/thumbnails/lcwaS0020775.jpg', 'desc': 'Website.   electronic |   Electronic (Form).', 'id': 13909}], 'leegreen.mid': [{'title': 'Official Campaign Web Site - Dennis F. Bradley', 'url': 'http://www.loc.gov/item/lcwaN0008697/', 'img': 'https://tile.loc.gov/storage-services/service/webcapture/project_1/thumbnails/lcwaS0012332.jpg', 'desc': 'Web Site.   electronic |   Electronic (Form).', 'id': 14540}], 'jesus_paid_it_all.mid': [{'title': 'Memory-of.com - Memorial website in memory of Pope John Paul II (1920-2005)', 'url': 'http://www.loc.gov/item/lcwaN0008056/', 'img': 'https://tile.loc.gov/storage-services/service/webcapture/project_1/thumbnails/lcwaS0011483.jpg', 'desc': "A memorial website is a great way to celebrate the life of a beloved one who has passed    away. Share your loved one's life story, legacy, photographs and audio/video clips. Visitors can    light a memorial candle, offer their condolences, pay tribute, and relate their thoughts,    experiences and memories.  Website.   electronic |   Electronic (Form).", 'id': 15696}], 'aughrim.mid': [{'title': 'Civil War Archive', 'url': 'http://www.loc.gov/item/lcwaN0003410/', 'img': 'https://tile.loc.gov/storage-services/service/webcapture/project_1/thumbnails/lcwaS0004936.jpg', 'desc': 'A growing collection of Civil War documents, especially useful for its transcribed regimental histories from the standard Civil War source "A Compendium of the War of the Rebellion" by Frederick Dyer, corps histories, and national list of Civil War Roundtables.  Website.   electronic |   Electronic (Form).', 'id': 1505}], '14tssb(tc).mid': [{'title': 'Eastern Shore 1812 Consortium', 'url': 'http://www.loc.gov/item/lcwaN0007931/', 'img': 'https://tile.loc.gov/storage-services/service/webcapture/project_1/thumbnails/lcwaS0011308.jpg', 'desc': 'Website.   electronic |   Electronic (Form).', 'id': 16082}], 'mi_spy.mid': [{'title': 'Chemical/Biological/Nuclear Anti-Terrorism', 'url': 'http://www.loc.gov/item/lcwaN0019743/', 'img': 'https://tile.loc.gov/storage-services/service/webcapture/project_1/thumbnails/lcwaS0028636.jpg', 'desc': 'Chemical/Biological/Nuclear Anti-Terrorism, a Web Site produced by Chemical/Biological/Nuclear Anti-Terrorism, a public interest or advocacy organization, is part of the Library of Congress September 11 Web Archive and preserves the web expressions of individuals, groups, the press and institutions in the United States and from around the world in the aftermath of the attacks in the United States on September 11, 2001.  Web Site.   electronic |   Electronic (Form).', 'id': 16782}], 'saints.mid': [{'title': 'Official Campaign Web Site - John Wayne Glotfelty', 'url': 'http://www.loc.gov/item/lcwaN0013102/', 'img': 'https://tile.loc.gov/storage-services/service/webcapture/project_1/thumbnails/lcwaS0018497.jpg', 'desc': 'Web Site.   electronic |   Electronic (Form).', 'id': 17042}], 'patriot.mid': [{'title': 'Official Campaign Web Site - Paul Lord', 'url': 'http://www.loc.gov/item/lcwaN0011951/', 'img': 'https://tile.loc.gov/storage-services/service/webcapture/project_1/thumbnails/lcwaS0017204.jpg', 'desc': 'Web Site.   electronic |   Electronic (Form).', 'id': 18674}], 'amerbeau.mid': [{'title': 'Faith United Methodist Church', 'url': 'http://www.loc.gov/item/lcwaN0020759/', 'img': 'https://tile.loc.gov/storage-services/service/webcapture/project_1/thumbnails/lcwaS0029652.jpg', 'desc': 'Faith United Methodist Church, a Web Site produced by Faith United Methodist Church, a religious organization, is part of the Library of Congress September 11 Web Archive and preserves the web expressions of individuals, groups, the press and institutions in the United States and from around the world in the aftermath of the attacks in the United States on September 11, 2001.  Web Site.   electronic |   Electronic (Form).', 'id': 20353}], 'morwoman.mid': [{'title': 'Official Campaign Web Site - Ruth Bryant White', 'url': 'http://www.loc.gov/item/lcwaN0001458/', 'img': 'https://tile.loc.gov/storage-services/service/webcapture/project_1/thumbnails/lcwaS0002064.jpg', 'desc': 'Web Site.   electronic |   Electronic (Form).', 'id': 21811}], 'bach_jesu.mid': [{'title': 'Ratzinger Index', 'url': 'http://www.loc.gov/item/lcwaN0008350/', 'img': 'https://tile.loc.gov/storage-services/service/webcapture/project_1/thumbnails/lcwaS0011864.jpg', 'desc': 'Website.   electronic |   Electronic (Form).', 'id': 22150}], 'connect.mid': [{'title': 'Georgia Republican Party', 'url': 'http://www.loc.gov/item/lcwaN0027732/', 'img': 'https://tile.loc.gov/storage-services/service/webcapture/project_1/thumbnails/lcwaS0040906.jpg', 'desc': 'Web Site.   electronic |   Electronic (Form).', 'id': 22543}], 'pytheme.mid': [{'title': 'Official Campaign Web Site - John Newton Frary', 'url': 'http://www.loc.gov/item/lcwaN0001757/', 'img': 'https://tile.loc.gov/storage-services/service/webcapture/project_1/thumbnails/lcwaS0002478.jpg', 'desc': 'Web Site.   electronic |   Electronic (Form).', 'id': 22651}], 'worldluv.mid': [{'title': '50+ Friends Club', 'url': 'http://www.loc.gov/item/lcwaN0021827/', 'img': 'https://tile.loc.gov/storage-services/service/webcapture/project_1/thumbnails/lcwaS0030720.jpg', 'desc': '50+ Friends Club, a Web Site produced by 50plus friends, a public interest or advocacy organization, is part of the Library of Congress September 11 Web Archive and preserves the web expressions of individuals, groups, the press and institutions in the United States and from around the world in the aftermath of the attacks in the United States on September 11, 2001.  Web Site.   electronic |   Electronic (Form).', 'id': 2439}], 'x2rhap1.mid': [{'title': 'The Ultimate Guide into Guam and her People. Welcome to Guam!', 'url': 'http://www.loc.gov/item/lcwaN0018700/', 'img': 'https://tile.loc.gov/storage-services/service/webcapture/project_1/thumbnails/lcwaS0001945.jpg', 'desc': 'Website.   electronic |   Electronic (Form).', 'id': 365}], 'DRStarSpangledBanner.mid': [{'title': "WWII 's - Kilroy Was Here Unknown stories and forgotten places", 'url': 'http://www.loc.gov/item/lcwaN0004776/', 'img': 'https://tile.loc.gov/storage-services/service/webcapture/project_1/thumbnails/lcwaS0006683.jpg', 'desc': 'Oral history and personal naratives of American soldiers during World War II and the Korean War.  Website.   electronic |   Electronic (Form).', 'id': 4247}], 'usanthem.mid': [{'title': 'Official Campaign Web Site - Brandon P. Brown', 'url': 'http://www.loc.gov/item/lcwaN0008703/', 'img': 'https://tile.loc.gov/storage-services/service/webcapture/project_1/thumbnails/lcwaS0012338.jpg', 'desc': 'Web Site.   electronic |   Electronic (Form).', 'id': 7456}], 'roxette.mid': [{'title': 'Multicapitalist Party', 'url': 'http://www.loc.gov/item/lcwaN0000342/', 'img': 'https://tile.loc.gov/storage-services/service/webcapture/project_1/thumbnails/lcwaS0000504.jpg', 'desc': 'Website.   electronic |   Electronic (Form).', 'id': 4898}], 'godbless.mid': [{'title': 'Official Campaign Web Site - David Tidwell', 'url': 'http://www.loc.gov/item/lcwaN0013227/', 'img': 'https://tile.loc.gov/storage-services/service/webcapture/project_1/thumbnails/lcwaS0018622.jpg', 'desc': 'Web Site.   electronic |   Electronic (Form).', 'id': 5504}], 'amaze.mid': [{'title': 'America Under Attack', 'url': 'http://www.loc.gov/item/lcwaN0020486/', 'img': 'https://tile.loc.gov/storage-services/service/webcapture/project_1/thumbnails/lcwaS0029379.jpg', 'desc': 'America Under Attack, a Web Site produced by Tina Durant, is part of the Library of Congress September 11 Web Archive and preserves the web expressions of individuals, groups, the press and institutions in the United States and from around the world in the aftermath of the attacks in the United States on September 11, 2001.  Web Site.   electronic |   Electronic (Form).', 'id': 5641}], 'lobby_music.mid': [{'title': 'The Antichrist Atheist Network! - www.Antichrist.net', 'url': 'http://www.loc.gov/item/lcwaN0008093/', 'img': 'https://tile.loc.gov/storage-services/service/webcapture/project_1/thumbnails/lcwaS0011521.jpg', 'desc': "Steve J. Quest's Antichrist Atheist Network!  Website.   electronic |   Electronic (Form).", 'id': 6646}]}
+    
+      
+
+      var app = new Vue({
+        el: '#app',
+        data: {
+          message: 'Hello Vue!',
+          midis: midis,
+          midiData: midiData,
+          display: false,
+          displayData : [],
+          playing: false
+        },
+        methods:{
+          stop: function(){
+            MIDIjs.stop()
+            this.playing = false;
+          },
+          shly: function(m){
+              MIDIjs.play('midi/'+m)
+              this.playing = m
+              if (this.midiData[m]){
+                
+                
+                this.displayData = this.midiData[m]
+                
+                
+                
+              }else{
+                
+                this.displayData = [
+                  
+                  {
+                    img: "dontknow",
+                    title: 'Not sure what page this midi comes from.',
+                    desc:'Could not find the HTML source reference to this midi filename.'
+                    
+                    
+                  }
+                ]
+              }
+              this.display = true;
+
+          }
+        }
+      })
+      
+    
+    </script>
+    
+    <!-- include the Glitch button to show what the webpage is about and
+          to make it easier for folks to view source and remix -->
+    <div class="glitchButton" style="position:fixed;top:20px;right:20px;"></div>
+    <script src="https://button.glitch.me/button.js"></script>
+  </body>
+</html>
